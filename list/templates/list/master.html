@@ -9,7 +9,7 @@
     <a id="master-edit-btn" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Изменить название">
         <img src="{% static 'list/edit.svg' %}" style="width: 16px;"></a>
     <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#deleteMasterModal"
-        data-toggle="tooltip" data-placement="top" title="Удалить МастерРэнкинг">
+        data-toggle="tooltip" data-placement="top" title="Удалить МастерРейтинг">
         <img src="{% static 'list/delete.svg' %}" style="width: 16px;">
     </button>
 </div>
@@ -18,16 +18,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteMasterLabel">Удалить МастерРэнкинг, а также списки и книги в нем?</h5>
+                <h5 class="modal-title" id="deleteMasterLabel">Удалить МастерРейтинг, а также списки и книги в нем?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Этот МастерРэнкинг, а также все списки и книги в нем будут удалены. Если некоторые из
-                    списков или книг повторяются в других МастерРэнкингах, они сохранятся там.</p>
+                <p>Этот МастерРейтинг, а также все списки и книги в нем будут удалены. Если некоторые из
+                    списков или книг повторяются в других МастерРейтингах, они сохранятся там.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <a class="btn btn-danger" href="{% url 'master_delete' master.id %}">Удалить МастерРэнкинг</a>
+                <a class="btn btn-danger" href="{% url 'master_delete' master.id %}">Удалить МастерРейтинг</a>
             </div>
         </div>
     </div>
@@ -41,20 +41,20 @@
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{% url 'master_lists' master.id master.slug %}">Списки в составе этого
-            МастерРэнкинга</a>
+            МастерРейтинга</a>
     </li>
 </ul>
 
 <div id="bookRanking">
     {% if master.list_set.count == 0 %}
     <br>
-    <p>Этот МастерРэнкинг пока пуст!</p><br>
+    <p>Этот МастерРейтинг пока пуст!</p><br>
     <a class="btn btn-primary" href="{% url 'list_add' %}">Добавить список книг</a>
 
     {% else %}
     {% if master.list_set.count == 1 %}
     <br>
-    <p>Вы добавили только один список, так что это пока не совсем МастерРэнкинг!</p>
+    <p>Вы добавили только один список, так что это пока не совсем МастерРейтинг!</p>
     {% endif %}
     <br>
     <p>Рейтинг каждой книги основан на количестве упоминаний и месте в списках, а также от того, какая у списков

@@ -42,11 +42,11 @@ def master_add(request):
             try:           
                 master = Master.objects.create(name=form.cleaned_data["name"], user=request.user)
             except:
-                messages.error(request, "МастерРэнкинг под этим названием уже есть. Как насчет другого названия?")
+                messages.error(request, "МастерРейтинг под этим названием уже есть. Как насчет другого названия?")
                 return render(request, "list/master_add.html",
                               {"form": form})
             else:
-                messages.success(request, "МастерРэнкинг был создан.")
+                messages.success(request, "МастерРейтинг был создан.")
                 return HttpResponseRedirect(reverse("list_add"))
         else:
             return render(request, "list/master_add.html", {"form": form})   
@@ -226,7 +226,7 @@ def master_delete(request, master_id):
     try:
         master = Master.objects.get(pk=int(master_id))
     except:
-        messages.error(request, "Такого МастерРэнкинга нет")
+        messages.error(request, "Такого МастерРейтинга нет")
         return HttpResponseRedirect(reverse("masters"))
     if master.user != request.user:
         raise Http404
@@ -234,7 +234,7 @@ def master_delete(request, master_id):
     List.objects.filter(masters__isnull=True).delete()
     Book.objects.filter(book_in_list__isnull=True).delete()
     Author.objects.filter(author_in_list__isnull=True).delete()
-    messages.success(request, "МастерРэнкинг был удален")
+    messages.success(request, "МастерРейтинг был удален")
     return HttpResponseRedirect(reverse("masters"))
 
 
@@ -244,7 +244,7 @@ def master_edit(request, master_id):
     try:
         master = Master.objects.get(pk=int(master_id))
     except:
-        return JsonResponse({"error": "МастерРэнкинг не найден"}, status=404)
+        return JsonResponse({"error": "МастерРейтинг не найден"}, status=404)
     if master.user != request.user:
         raise Http404
     if request.method == "PUT":
@@ -682,7 +682,7 @@ def master(request, master_id, slug):
         if master_url:
             return HttpResponseRedirect(master_url)
     except:
-        messages.error(request, "Такого МастерРэнкинга нет")
+        messages.error(request, "Такого МастерРейтинга нет")
         return HttpResponseRedirect(reverse("masters"))
     if master.user != request.user:
         raise Http404
@@ -700,7 +700,7 @@ def master_author_ranking(request, master_id, slug):
         if master_url:
             return HttpResponseRedirect(master_url)
     except:
-        messages.error(request, "Такого МастерРэнкинга нет")
+        messages.error(request, "Такого МастерРейтинга нет")
         return HttpResponseRedirect(reverse("masters"))
     if master.user != request.user:
         raise Http404
@@ -716,7 +716,7 @@ def master_lists(request, master_id, slug):
         if master_url:
             return HttpResponseRedirect(master_url)
     except:
-        messages.error(request, "Такого МастерРэнкинга нет")
+        messages.error(request, "Такого МастерРейтинга нет")
         return HttpResponseRedirect(reverse("masters"))
     if master.user != request.user:
         raise Http404

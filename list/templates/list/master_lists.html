@@ -1,6 +1,6 @@
 {% extends "list/base.html" %}
 {% load static %}
-{% block title %}Списки в МастерРэнкинге{% endblock %}
+{% block title %}Списки в МастерРейтинге{% endblock %}
 {% block body %}
 
 <p></p>
@@ -10,7 +10,7 @@
     <a id="master-edit-btn" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Изменить название">
         <img src="{% static 'list/edit.svg' %}" style="width: 16px;"></a>
     <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#deleteMasterModal"
-        data-toggle="tooltip" data-placement="top" title="Удалить МастерРэнкинг">
+        data-toggle="tooltip" data-placement="top" title="Удалить МастерРейтинг">
         <img src="{% static 'list/delete.svg' %}" style="width: 16px;">
     </button>
 </div>
@@ -19,16 +19,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteMasterLabel">Удалить МастерРэнкинг, а также списки и книги в нем?</h5>
+                <h5 class="modal-title" id="deleteMasterLabel">Удалить МастерРейтинг, а также списки и книги в нем?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Этот МастерРэнкинг, а также все списки и книги в нем будут удалены. Если некоторые из
-                    списков или книг повторяются в других МастерРэнкингах, они сохранятся там.</p>
+                <p>Этот МастерРейтинг, а также все списки и книги в нем будут удалены. Если некоторые из
+                    списков или книг повторяются в других МастерРейтингах, они сохранятся там.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <a class="btn btn-danger" href="{% url 'master_delete' master.id %}">Удалить МастерРэнкинг</a>
+                <a class="btn btn-danger" href="{% url 'master_delete' master.id %}">Удалить МастерРейтинг</a>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
         <a class="nav-link" href="{% url 'master_author_ranking' master.id master.slug %}">Рейтинг авторов</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" href="#">Списки в составе этого МастерРэнкинга</a>
+        <a class="nav-link active" href="#">Списки в составе этого МастерРейтинга</a>
     </li>
 </ul>
 <div class="accordion" id="accordionLists">
@@ -79,12 +79,12 @@
                 {% endif %}
 
                 {% if list.masters.count != 1 %}
-                <p><strong>В МастерРэнкингах:</strong></p>
+                <p><strong>В МастерРейтингах:</strong></p>
                 {% for master in list.masters.all %}
                 - <a href="{% url 'master' master.id master.slug %}">{{ master }}</a><br>
                 {% endfor %}
                 {% else %}
-                <p><strong>В МастерРэнкинге </strong><a
+                <p><strong>В МастерРейтинге </strong><a
                         href="{% url 'master' list.masters.first.id list.masters.first.slug %}">
                         {{ list.masters.first }}</a>
                 </p>
@@ -101,7 +101,7 @@
                             <div class="modal-body">
                                 <p>Список и все книги в нем будут удалены. Если некоторые из них повторяются в других
                                     списках,
-                                    они сохранятся в МастерРэнкинге как часть этих списков.</p>
+                                    они сохранятся в МастерРейтинге как часть этих списков.</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
@@ -158,7 +158,7 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Книга будет удалена из списка. В МастерРэнкинге книга сохранится, если
+                                        <p>Книга будет удалена из списка. В МастерРейтинге книга сохранится, если
                                             она повторяется в других списках.</p>
                                     </div>
                                     <div class="modal-footer">

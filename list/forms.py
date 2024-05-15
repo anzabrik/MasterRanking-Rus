@@ -21,7 +21,7 @@ class MasterForm(forms.Form):
         self.helper.form_action = ''
         self.helper.layout = Layout(FloatingField('name'))
 
-        self.helper.add_input(Submit('submit', 'Save'))
+        self.helper.add_input(Submit('submit', 'Сохранить'))
 
 
 class ListForm(forms.Form):
@@ -31,7 +31,7 @@ class ListForm(forms.Form):
     )
 
     masters = forms.ModelMultipleChoiceField(
-        label = "МастерРэнкинг (вы можете выбрать более одного)",
+        label = "МастерРейтинг (вы можете выбрать более одного)",
         queryset = Master.objects.all(),
         #to_field_name = "name",
     )
@@ -64,7 +64,7 @@ class ListForm(forms.Form):
     )
 
     url = forms.URLField(
-        label = "Link",
+        label = "Ссылка на источник",
         max_length = 560,
         required = False,  
     )
@@ -77,7 +77,7 @@ class ListForm(forms.Form):
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = ''      
-        self.helper.add_input(Submit('submit', 'Save'))
+        self.helper.add_input(Submit('submit', 'Сохранить'))
 
 
 class BookForm(forms.Form):

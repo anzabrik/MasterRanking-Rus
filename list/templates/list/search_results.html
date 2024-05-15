@@ -6,7 +6,7 @@
 {% if not masters and not lists and not books and not authors %}
 <br>
 <p></p>
-<h2>"{{ q }}" не найдено в названиях МастерРэнкингов, списков или книг, а также именах авторов.</h2>
+<h2>"{{ q }}" не найдено в названиях МастерРейтингов, списков или книг, а также именах авторов.</h2>
 <p></p>
 {% else %}
 <p></p>
@@ -17,7 +17,7 @@
 
         {% if masters %}
         <tr>
-            <th>МастерРэнкинги</th>
+            <th>МастерРейтинги</th>
             <td>
                 {% for master in masters %}
                 <a href="{% url 'master' master.id master.slug %}">{{ master.name }}</a>
@@ -55,7 +55,7 @@
                 {% endif %}
                 {% endfor %}
                 <br>
-                <p>В МастерРэнкингах:</p>
+                <p>В МастерРейтингах:</p>
                 {% for bim in book.book_in_master_set.all %}
                 <p>- <a href="{% url 'master' bim.master.id bim.master.slug %}">{{ bim.master }}</a>
                     : место {{ bim.place }}</p>
@@ -84,7 +84,7 @@
                 {% if ail.info %}: "{{ ail.info }}"</p>
                 {% endif %}
                 {% endfor %}
-                <p>{{ author.name }} в МастерРэнкингах:</p>
+                <p>{{ author.name }} в МастерРейтингах:</p>
                 {% for aim in author.author_in_master_set.all %}
                 <p>- <a href="{% url 'master' aim.master.id aim.master.slug %}">{{ aim.master }}</a>
                     : место {{ aim.place }}</p>

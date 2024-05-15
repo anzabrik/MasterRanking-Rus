@@ -1,12 +1,12 @@
 {% extends 'list/base.html' %}
 
-{% block title %}МастерРэнкинги{% endblock %}
+{% block title %}МастерРейтинги{% endblock %}
 
 {% block body %}
 
 {% if masters.count > 0 %}
 <p></p>
-<h1>Все МастерРэнкинги</h1>
+<h1>Все МастерРейтинги</h1>
 <p></p>
 <table class="table table-hover">
     <thead>
@@ -31,7 +31,7 @@
 </table>
 {% else %}
 <br>
-<h1>Вы еще не создали ни одного МастерРэнкинга</h1><br>
-<a class="btn btn-primary" href="{% url 'master_add' %}">Добавить МастерРэнкинг</a>
+<h1>Вы еще не создали ни одного МастерРейтинга</h1><br>
+<a class="btn btn-primary" href="{% url 'master_add' %}">Добавить МастерРейтинг</a>
 {% endif %}
 {% endblock %}

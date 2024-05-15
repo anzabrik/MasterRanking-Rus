@@ -19,8 +19,8 @@ class Master(models.Model):
 
     class Meta:        
         constraints = [
-            models.UniqueConstraint(fields=['name', 'user'], name='У пользователя не должно быть несколько МастерРэнкингов с одним названием'),
-            models.UniqueConstraint(fields=['slug', 'user'], name='Слаг для МастерРэнкинга должен быть уникальным')
+            models.UniqueConstraint(fields=['name', 'user'], name='У пользователя не должно быть несколько МастерРейтингов с одним названием'),
+            models.UniqueConstraint(fields=['slug', 'user'], name='Слаг для МастерРейтинга должен быть уникальным')
         ]  
 
     '''
@@ -162,7 +162,7 @@ class Book_In_Master(models.Model):
     
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['book', 'master'], name='книга один раз в МастерРэнкинге')
+            models.UniqueConstraint(fields=['book', 'master'], name='книга один раз в МастерРейтинге')
         ]
 
 
@@ -174,7 +174,7 @@ class Author_In_Master(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['author', 'master'], name='автор один раз в МастерРэнкинге')
+            models.UniqueConstraint(fields=['author', 'master'], name='автор один раз в МастерРейтинге')
         ]
 
     def get_books(self):
