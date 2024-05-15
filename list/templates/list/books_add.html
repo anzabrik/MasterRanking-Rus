@@ -1,0 +1,26 @@
+{% extends 'list/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Добавить книги{% endblock %}
+
+{% block body %}
+
+{% if not list.places_matter %}
+<div id="books-add">
+</div>
+{% endif %}
+<p></p>
+<h3>Добавить книги в список "{{ list }}",
+    {% if list.masters.count == 1 %}
+    который относится к МастерРэнкингу "{{ list.masters.first }}" </h3>
+{% else %}
+который относится к МастерРэнкингам:
+</h3>
+{% for master in list.masters.all %}
+<h3> - "{{ master }}"</h3>
+{% endfor %}
+{% endif %}
+<p></p>
+{% crispy formset helper %}
+
+{% endblock %}

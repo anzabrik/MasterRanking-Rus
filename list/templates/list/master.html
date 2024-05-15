@@ -1,0 +1,111 @@
+{% extends 'list/base.html' %}
+{% load static %}
+{% block title %}{{ master }}{% endblock %}
+{% block body %}
+<p></p>
+<h1 id="master-name" data-masterid="{{ master.id }}">{{ master }}</h1>
+<p></p>
+<div id="master-btns">
+    <a id="master-edit-btn" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Изменить название">
+        <img src="{% static 'list/edit.svg' %}" style="width: 16px;"></a>
+    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#deleteMasterModal"
+        data-toggle="tooltip" data-placement="top" title="Удалить МастерРэнкинг">
+        <img src="{% static 'list/delete.svg' %}" style="width: 16px;">
+    </button>
+</div>
+
+<div class="modal fade" id="deleteMasterModal" tabindex="-1" aria-labelledby="deleteMasterLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteMasterLabel">Удалить МастерРэнкинг, а также списки и книги в нем?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Этот МастерРэнкинг, а также все списки и книги в нем будут удалены. Если некоторые из
+                    списков или книг повторяются в других МастерРэнкингах, они сохранятся там.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <a class="btn btn-danger" href="{% url 'master_delete' master.id %}">Удалить МастерРэнкинг</a>
+            </div>
+        </div>
+    </div>
+</div>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#">Рейтинг книг</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'master_author_ranking' master.id master.slug %}">Рейтинг авторов</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'master_lists' master.id master.slug %}">Списки в составе этого
+            МастерРэнкинга</a>
+    </li>
+</ul>
+
+<div id="bookRanking">
+    {% if master.list_set.count == 0 %}
+    <br>
+    <p>Этот МастерРэнкинг пока пуст!</p><br>
+    <a class="btn btn-primary" href="{% url 'list_add' %}">Добавить список книг</a>
+
+    {% else %}
+    {% if master.list_set.count == 1 %}
+    <br>
+    <p>Вы добавили только один список, так что это пока не совсем МастерРэнкинг!</p>
+    {% endif %}
+    <br>
+    <p>Рейтинг каждой книги основан на количестве упоминаний и месте в списках, а также от того, какая у списков
+        степень доверия. Вы можете редактировать книги и списке на странице списка.</p>
+    <a class="btn btn-primary" href="{% url 'list_add' %}">Добавить еще один список</a>
+    <br>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">место</th>
+                <th scope="col">Рейтинг</th>
+                <th scope="col">Название</th>
+                <th scope="col">Автор</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bim in books_in_master_by_rating %}
+            <tr>
+                <td>{{ bim.place }}</td>
+                <td>{{ bim.rating }}</td>
+                <td>{{ bim.book.title }}</td>
+                <td>{{ bim.book.get_authors }}</td>
+                <td>
+                    <p>
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ bim.id }}" aria-expanded="false"
+                            aria-controls="collapse{{ bim.id }}">
+                            Подробнее
+                        </button>
+                    </p>
+                    <div class="collapse" id="collapse{{ bim.id }}">
+                        <div class="card card-body">
+                            <p>В списках:</p>
+                            {% for bil_new in bim.book.book_in_list_set.all %}
+                            <p>- <a href="{% url 'list' bil_new.list.id bil_new.list.slug %}">{{ bil_new.list }}</a>
+                                {% if bil_new.list.places_matter %}: место {{ bil_new.place }}
+                                {% endif %}
+                                {% if bil_new.info %}: "{{ bil_new.info }}"</p>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if master.list_set.count > 1 %}
+
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

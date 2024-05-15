@@ -1,0 +1,81 @@
+{% extends 'list/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Вход/Регистрация{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <div class="row align-items-center">
+
+        <div class="col-3">
+            <div>
+                <p></p>
+                <h1 class="text-center">Вычисляем лучшие книги в любой теме</h1>
+                <br>
+                <p class="lead">Как понять, на какие книги стоит тратить время?</p>
+                <p class="lead">МастерРэнкинг соединяет предложенные вами списки книг из разных источников и
+                    определяет рейтинг каждой книги и автора, основываясь на количестве упоминаний и месте в списках, а
+                    также
+                    уровня доверия к источнику. Вы получаете общий рейтинг, ключ к любой теме.</p>
+                <div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group d-grid gap-2">
+                            <label for="email">Имейл</label>
+                            <input autofocus class="form-control" type="email" name="email" placeholder="Имейл">
+                            <label for="password">Пароль</label>
+                            <input class="form-control" type="password" name="password" placeholder="Пароль">
+
+                            <button formaction="{% url 'register' %}" class="btn btn-primary"
+                                type="input">Зарегистрироваться</button>
+                            <button formaction="{% url 'login' %}" class="btn btn-primary" type="input">Войти</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-9" data-bs-theme="dark">
+            <div id="carouselExampleIndicators" class="carousel slide m-4">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{% static 'list/mr1.jpg' %}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{% static 'list/mr2.jpg' %}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{% static 'list/mr3.jpg' %}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{% static 'list/mr4.jpg' %}" class="d-block w-100" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Предыдущий</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Следующий</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

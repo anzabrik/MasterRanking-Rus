@@ -1,0 +1,61 @@
+{% extends "list/base.html" %}
+{% load static %}
+{% block title %}Рейтинг авторов{% endblock %}
+{% block body %}
+<p></p>
+<h1 id="master-name" data-masterid="{{ master.id }}">{{ master }}</h1>
+<p></p>
+<div id="master-btns">
+    <a id="master-edit-btn" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Изменить название">
+        <img src="{% static 'list/edit.svg' %}" style="width: 16px;"></a>
+    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#deleteMasterModal"
+        data-toggle="tooltip" data-placement="top" title="Удалить МастерРэнкинг">
+        <img src="{% static 'list/delete.svg' %}" style="width: 16px;">
+    </button>
+</div>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="{% url 'master' master.id master.slug %}">Рейтинг книг</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Рейтинг авторов</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'master_lists' master.id master.slug %}">Списки в составе МастерРэнкинга</a>
+    </li>
+</ul>
+
+{% if authors_in_master_by_rating %}
+<br>
+<p>Рейтинг каждого автора отражает общий рейтинг всех книг
+    этого автора в данном МастерРэнкинге.
+</p>
+<br>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Место</th>
+            <th scope="col">Рейтинг</th>
+            <th scope="col">Название</th>
+            <th scope="col">Книги этого автора в этом МастерРэнкинге</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for aim in authors_in_master_by_rating %}
+        <tr>
+            <td>{{ aim.place }}</td>
+            <td>{{ aim.rating }}</td>
+            <td>{{ aim.author.name }}</td>
+            <td>{{ aim.get_books }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<br>
+<p>Авторов пока нет! Если вы добавите авторов в списках, то увидите, кто имеет наибольшее влияние.</p>
+<br>
+{% endif %}
+
+{% endblock %}

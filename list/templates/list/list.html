@@ -1,0 +1,198 @@
+{% extends 'list/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ list }}{% endblock %}
+
+{% block body %}
+
+<div class="listProperties">
+    <p></p>
+    <h1>{{ list }}
+        <a class="btn btn-light" href="{% url 'list_edit' list.id list.slug %}" data-toggle="tooltip"
+            data-placement="top" title="Редактировать список">
+            <img src="{% static 'list/edit.svg' %}" style="width: 16px;"></a>
+        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#deleteListModal"
+            data-toggle="tooltip" data-placement="top" title="Удалить список">
+            <img src="{% static 'list/delete.svg' %}" style="width: 16px;">
+        </button>
+    </h1>
+    <p></p>
+    <p><strong>Уровень доверия:</strong> {{ list.credibility }} из 5</p>
+    {% if list.places_matter %}
+    <p><strong>Это ранжированный список (первая книга - лучшая)</strong></p>
+    {% else %}
+    <p><strong>Это неранжированный список (все книги одинаковые по значимости)</strong></p>
+    {% endif %}
+    {% if list.info %}
+    <p><strong>Дополнительно:</strong> {{ list.info }}</p>
+    {% endif %}
+    {% if list.url %}
+    <p><a href="{{ list.url }}">Источник</a></p>
+    {% endif %}
+
+    {% if list.masters.count != 1 %}
+    <p><strong>В мастер-рейтингах:</strong></p>
+    {% for master in list.masters.all %}
+    - <a href="{% url 'master' master.id master.slug %}">{{ master }}</a><br>
+    {% endfor %}
+    {% else %}
+    <p><strong>В мастер-рейтинге </strong><a href="{% url 'master' list.masters.first.id list.masters.first.slug %}">
+            {{ list.masters.first }}</a>
+    </p>
+    {% endif %}
+</div>
+
+
+<div class="modal fade" id="deleteListModal" tabindex="-1" aria-labelledby="deleteListLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteListLabel">Удалить этот список вместе с книгами?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Список и все книги в нем будут удалены. Если некоторые из них повторяются в других списках,
+                    они сохранятся в МастерРэнкинге как часть этих списков.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <a class="btn btn-danger" href="{% url 'list_delete' list.id %}">Удалить</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if not bils_sorted %}
+<p>В этом списке пока нет книг</p>
+<button class="btn btn-primary add-book" id="e{{ list.id }}">Добавить книгу</button><br>
+{% else %}
+<hr>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            {% if list.places_matter %}
+            <th scope="col">Место</th>
+            {% endif %}
+            <th scope="col">Название</th>
+            <th scope="col">Автор (авторы)</th>
+            <th scope="col">Дополнительно</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bil in bils_sorted %}
+        <tr>
+            {% if list.places_matter %}
+            <td>{{ bil.place }}</td>
+            {% endif %}
+            <td>{{ bil.book.title }}</td>
+            <td>{{ bil.book.get_authors }}</td>
+            <td>{{ bil.info }}</td>
+            <td>
+                <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                    data-bs-target="#editBilModal{{bil.id}}" data-toggle="tooltip" data-placement="top"
+                    title="Редактировать книгу">
+                    <img src="{% static 'list/edit.svg' %}" style="width: 16px;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                        data-bs-target="#deleteBilModal{{bil.id}}" data-toggle="tooltip" data-placement="top"
+                        title="Удалить книгу">
+                        <img src="{% static 'list/delete.svg' %}" style="width: 16px;">
+            </td>
+        </tr>
+        <div class="modal fade" id="deleteBilModal{{bil.id}}" tabindex="-1" aria-labelledby="DeleteBilModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteBilModalLabel">Удалить книгу из списка?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Книга будет удалена из списка. В МастерРэнкинге книга сохранится, если
+                            она повторяется в других списках.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <a class="btn btn-danger" href="{% url 'bil_delete' bil.id %}">Удалить книгу</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editBilModal{{bil.id}}" tabindex="-1" aria-labelledby="EditBilModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="editBilModalLabel">Редактировать книгу</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'bil_edit' bil.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {% if list.places_matter %}
+                                <p>Place: <input type="number" name="place" value="{{ bil.place }}"></p>
+                                {% endif %}
+                                <p>Title: <input type="text" name="title" value="{{ bil.book.title }}"></p>
+                                <p>Author(s): <input type="text" name="authors" value="{{ bil.book.get_authors }}"></p>
+                                <p>Info: <input type="text" name="info" value="{{ bil.book.info }}"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Закрыть</button>
+                                    <input type="submit" class="btn btn-primary" value="Сохранить">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </tbody>
+</table>
+<button class="btn btn-primary add-book" id="n{{ list.id }}">Добавить книгу</button><br>
+{% endif %}
+<div class="for-book-form" id="f{{ list.id }}">
+    <h2>Добавление книги</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.non_field_errors }}
+            <table class="table">
+                <tr>
+                    {% if list.places_matter %}
+                    <th>Место</th>
+                    {% endif %}
+                    <th>Название</th>
+                    <th>Автор</th>
+                    <th>Дополнительно</th>
+                </tr>
+                <tr>
+                    {% if list.places_matter %}
+                    <td>{{ form.place.errors }}{{ form.place }}</td>
+                    {% endif %}
+                    <td>{{ form.title.errors }}{{ form.title }}</td>
+                    <td>{{ form.authors.errors }}{{ form.authors }}</td>
+                    <td>{{ form.info.errors }}{{ form.info }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="btn-toolbar" role="group">
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-secondary close-form" id="c{{ list.id }}">
+                    Закрыть</button>
+            </div>
+            <div class="btn-group me-2">
+                <input type="submit" id="save-book" class="btn btn-primary" data-master="" value="Сохранить книгу">
+            </div>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

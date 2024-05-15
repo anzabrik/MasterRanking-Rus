@@ -1,0 +1,24 @@
+{% extends "list/base.html" %}
+
+{% block title %}Что дальше?{% endblock %}
+{% block body %}
+<p></p>
+<h2>Вы добавили книги в список "{{ list }}"</h2><br>
+<p></p>
+{% if list.masters.count == 1 %}
+<a class="btn btn-primary" href="{% url 'master' list.masters.first.id list.masters.first.slug %}">Посмотреть
+    МастерРэнкинг для
+    "{{ list.masters.first }}"</a><br><br>
+{% elif list.masters.count == 0 %}
+{% else %}
+<p>Посмотреть итоговый рейтинг для:</p>
+{% for master in list.masters.all %}
+<p><a class="btn btn-primary" href="{% url 'master' master.id master.slug %}">"{{ master }}"</a></p>
+{% endfor %}
+{% endif %}
+
+<a class="btn btn-primary" href="{% url 'list_add' %}">Добавить еще один список</a><br><br>
+<a class="btn btn-primary" href="{% url 'list_edit' list.id list.slug %}">
+    Редактировать список "{{ list }}"</a><br><br>
+
+{% endblock %}

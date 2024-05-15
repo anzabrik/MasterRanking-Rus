@@ -1,0 +1,38 @@
+{% extends 'list/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Редактировать список{% endblock %}
+
+{% block body %}
+<p></p>
+<h1>Редактируем список "{{ list }}"</h1>
+<p></p>
+{% crispy list_form %}
+<a class="btn btn-primary" href="{% url 'list' list.id list.slug %}">Редактировать или удалить книги</a>
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteListModal">
+    Удалить список
+</button>
+
+
+<div class="modal fade" id="deleteListModal" tabindex="-1" aria-labelledby="deleteListLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteListLabel">Удалить список и книги в нем?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Список и все книги в нем будут удалены. Если некоторые из них повторяются в других списках,
+                    они сохранятся в МастерРэнкинге как часть этих списков.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <a class="btn btn-danger" href="{% url 'list_delete' list.id %}">Удалить список</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

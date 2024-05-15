@@ -1,0 +1,12 @@
+{% extends 'list/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Новый список{% endblock %}
+
+{% block body %}
+<p></p>
+<h1>Добавьте новый список в ваш МастерРэнкинг</h1>
+<p></p>
+{% crispy form %}
+
+{% endblock %}

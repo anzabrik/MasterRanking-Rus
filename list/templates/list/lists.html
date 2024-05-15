@@ -1,0 +1,38 @@
+{% extends 'list/base.html' %}
+
+{% block title %}Списки{% endblock %}
+
+{% block body %}
+
+{% if lists.count > 0 %}
+<p></p>
+<h1>Все списки</h1>
+<p></p>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Список</th>
+            <th scope="col">В МастерРэнкинге</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for list in lists %}
+        <tr>
+            <td><a href="{% url 'list' list.id list.slug %}">{{ list }}</a></td>
+            <td> {% if list.masters.count > 0 %}
+                {% for master in list.masters.all %}
+                - <a href="{% url 'master' master.id master.slug %}">{{ master }}</a><br>
+                {% endfor %}
+                {% endif %}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+<br>
+<h1>Вы не добавили еще ни одного списка!</h1><br>
+<a class="btn btn-primary" href="{% url 'list_add' %}">Добавить список</a>
+
+{% endif %}
+{% endblock %}

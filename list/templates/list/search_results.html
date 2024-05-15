@@ -1,0 +1,104 @@
+{% extends 'list/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Результаты поиска{% endblock %}
+{% block body %}
+<p></p>
+{% if not masters and not lists and not books and not authors %}
+<br>
+<p></p>
+<h2>"{{ q }}" не найдено в названиях МастерРэнкингов, списков или книг, а также именах авторов.</h2>
+<p></p>
+{% else %}
+<p></p>
+<h1>Результаты поиска по запросу "{{ q }}"</h1>
+<p></p>
+<table class="table table-hover">
+    <tbody>
+
+        {% if masters %}
+        <tr>
+            <th>МастерРэнкинги</th>
+            <td>
+                {% for master in masters %}
+                <a href="{% url 'master' master.id master.slug %}">{{ master.name }}</a>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endif %}
+
+        {% if lists %}
+        <tr>
+            <th>Списки</th>
+            <td>
+                {% for list in lists %}
+                <a href="{% url 'list' list.id list.slug %}">{{ list.name }}</a>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endif %}
+
+        {% if books %}
+        <tr>
+            <th>Книги</th>
+            <td>
+                {% for book in books %}
+
+                <p><strong>{{ forloop.counter }}. {{ book.title }} {% if book.authors.count > 0 %},
+                        {{ book.get_authors }}
+                        {% endif %}</strong></p>
+                <p>В списках:</p>
+                {% for bil in book.book_in_list_set.all %}
+                <p>- <a href="{% url 'list' bil.list.id bil.list.slug %}">{{ bil.list }}</a>
+                    {% if bil.list.places_matter %}: place {{ bil.place }}
+                    {% endif %}
+                    {% if bil.info %}: "{{ bil.info }}"</p>
+                {% endif %}
+                {% endfor %}
+                <br>
+                <p>В МастерРэнкингах:</p>
+                {% for bim in book.book_in_master_set.all %}
+                <p>- <a href="{% url 'master' bim.master.id bim.master.slug %}">{{ bim.master }}</a>
+                    : место {{ bim.place }}</p>
+                {% endfor %}
+                {% if forloop.counter != books.count %}
+                <hr style="border: 1px dashed lightgray;">
+                {% endif %}
+                {% endfor %}{# 'for book in books' #}
+            </td>
+
+        </tr>
+        {% endif %}{# 'if books' #}
+
+        {% if authors %}
+        <tr>
+            <th>Авторы</th>
+            <td>{% for author in authors %}
+                <p><strong>{{ forloop.counter }}. {{ author.name }}</strong></p>
+                <p>Книги этого автора:
+                    {{ author.get_books }}</p>
+                <p>{{ author.name }} в списках:</p>
+                {% for ail in author.author_in_list_set.all %}
+                <p>- <a href="{% url 'list' ail.list.id ail.list.slug %}">{{ ail.list }}</a>
+                    {% if ail.list.places_matter %}: место {{ ail.place }}</p>
+                {% endif %}
+                {% if ail.info %}: "{{ ail.info }}"</p>
+                {% endif %}
+                {% endfor %}
+                <p>{{ author.name }} в МастерРэнкингах:</p>
+                {% for aim in author.author_in_master_set.all %}
+                <p>- <a href="{% url 'master' aim.master.id aim.master.slug %}">{{ aim.master }}</a>
+                    : место {{ aim.place }}</p>
+                {% endfor %}
+                {% if forloop.counter != books.count %}
+                <hr style="border: 1px dashed lightgray;">
+                {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+
+        {% endif %}
+    </tbody>
+</table>
+{% endif %} {# 'if there're any search results #}
+
+{% endblock %}
