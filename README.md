@@ -2,9 +2,9 @@
 
 ## Video Demo
 
-[Video Demo](). -- на русском
+[Video Demo](https://youtu.be/VljTP1cG0S8) -- на русском
 
-[Video Demo]( https://youtu.be/h29ii7SVBuI). -- на английском
+[Video Demo](https://youtu.be/4m2JK5gQPnw) -- in English
 
 ## Инструменты
 

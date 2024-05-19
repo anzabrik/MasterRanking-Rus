@@ -49,7 +49,7 @@
                 <p>В списках:</p>
                 {% for bil in book.book_in_list_set.all %}
                 <p>- <a href="{% url 'list' bil.list.id bil.list.slug %}">{{ bil.list }}</a>
-                    {% if bil.list.places_matter %}: place {{ bil.place }}
+                    {% if bil.list.places_matter %}: место {{ bil.place }}
                     {% endif %}
                     {% if bil.info %}: "{{ bil.info }}"</p>
                 {% endif %}
