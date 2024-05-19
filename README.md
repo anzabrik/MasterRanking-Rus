@@ -1,7 +1,5 @@
 # MasterRanking: Джанго-приложение, которое вычисляет лучшие книги и авторов на основе полученных от пользователя списков 
 
-## Video Demo
-
 [Video Demo](https://youtu.be/VljTP1cG0S8) -- на русском
 
 [Video Demo](https://youtu.be/4m2JK5gQPnw) -- in English
